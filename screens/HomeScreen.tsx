@@ -1,5 +1,5 @@
 import React from "react";
-// import Auth from "@aws-amplify/auth";
+import Auth from "@aws-amplify/auth";
 import {
   FlatList,
   StyleSheet,
@@ -13,9 +13,9 @@ import ChatRooms from "../assets/dummy-data/ChatRooms";
 import { useNavigation } from "@react-navigation/core";
 
 export default function HomeScreen() {
-  // const logOut = () => {
-  //   Auth.signOut();
-  // };
+  const logOut = () => {
+    Auth.signOut();
+  };
   const navigation = useNavigation();
   return (
     <View style={styles.page}>
@@ -35,7 +35,7 @@ export default function HomeScreen() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        // onPress={logOut}
+        onPress={logOut}
       >
         <Text>LogOut</Text>
       </TouchableOpacity>
