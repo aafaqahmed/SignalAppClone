@@ -9,6 +9,7 @@ import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
+  useNavigation,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
@@ -27,6 +28,7 @@ import ChatRoomScreen from "../screens/ChatRoomScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import UsersScreen from "../screens/UsersScreen";
 // import TabOneScreen from "../screens/TabOneScreen";
 // import TabTwoScreen from "../screens/TabTwoScreen";
 import {
@@ -84,6 +86,15 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
+        name="UsersScreen"
+        component={UsersScreen}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          title: "Users",
+        }}
+      />
+      <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
@@ -93,6 +104,7 @@ function RootNavigator() {
 }
 
 const HomeHeader = () => {
+  const navigation = useNavigation();
   const { width } = useWindowDimensions();
   return (
     <View
@@ -128,7 +140,7 @@ const HomeHeader = () => {
           style={{ marginHorizontal: 10 }}
         />
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => navigation.navigate("UsersScreen")}>
         <Feather
           name="edit-2"
           size={24}

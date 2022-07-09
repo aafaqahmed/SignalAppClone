@@ -25,7 +25,6 @@ export default function HomeScreen() {
           <ChatRoomItem navigation={navigation} chatRoom={item} />
         )}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<Text>Messages</Text>}
       />
       <TouchableOpacity
         style={{
