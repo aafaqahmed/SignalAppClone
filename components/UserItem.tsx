@@ -1,13 +1,45 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
+import { Auth, DataStore } from "aws-amplify";
+import { ChatRoom, ChatRoomUser, User } from "../src/models";
+import { useNavigation } from "@react-navigation/native";
 
 const UserItem = ({ user }) => {
-  const onPress = () => {
+  const navigation = useNavigation();
+  const onPress = async () => {
     // Create chat room with that users
+    const newChatRoom = await DataStore.save(new ChatRoom({ newMessages: 0 }));
+
+    //connect users with Chat Room
+    const authUser = await Auth.currentAuthenticatedUser();
+    const dbUser = await DataStore.query(User, authUser.attributes.sub);
+
+    await DataStore.save(
+      new ChatRoomUser({
+        user: dbUser,
+        chatRoom: newChatRoom,
+      })
+    );
+
+    await DataStore.save(
+      new ChatRoomUser({
+        user,
+        chatRoom: newChatRoom,
+      })
+    );
+
+    navigation.navigate("ChatRoom", { id: newChatRoom.id });
   };
 
   return (
-    <Pressable style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image
         style={styles.image}
         source={{
@@ -19,7 +51,7 @@ const UserItem = ({ user }) => {
           <Text style={styles.name}>{user.name}</Text>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
